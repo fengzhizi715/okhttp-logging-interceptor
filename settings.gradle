@@ -1,0 +1,3 @@
+rootProject.name = 'okhttp-loging-interceptor'
+include 'core'
+include 'example'
