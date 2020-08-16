@@ -1,9 +1,9 @@
-package cn.netdiscovery.http.inteerceptor.log
+package cn.netdiscovery.http.interceptor.log
 
 /**
  *
  * @FileName:
- *          cn.netdiscovery.http.inteerceptor.log.LogManager
+ *          cn.netdiscovery.http.interceptor.log.LogManager
  * @author: Tony Shen
  * @date: 2020-08-14 17:57
  * @version: V1.0 内部使用的日志操作

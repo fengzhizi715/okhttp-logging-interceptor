@@ -1,9 +1,9 @@
-package cn.netdiscovery.http.inteerceptor.log
+package cn.netdiscovery.http.interceptor.log
 
 /**
  *
  * @FileName:
- *          cn.netdiscovery.http.inteerceptor.log.LogProxy
+ *          cn.netdiscovery.http.interceptor.log.LogProxy
  * @author: Tony Shen
  * @date: 2020-08-14 17:56
  * @version: V1.0 日志库的代理操作，便于开发者使用自己的日志库

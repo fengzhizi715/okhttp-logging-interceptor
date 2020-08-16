@@ -1,4 +1,4 @@
-package cn.netdiscovery.http.inteerceptor
+package cn.netdiscovery.http.interceptor
 
 import okhttp3.Headers
 import okhttp3.Interceptor
@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit
 /**
  *
  * @FileName:
- *          cn.netdiscovery.http.inteerceptor.LoggingInterceptor
+ *          cn.netdiscovery.http.interceptor.LoggingInterceptor
  * @author: Tony Shen
  * @date: 2020-08-14 18:26
  * @version: V1.0 <描述当前版本功能>

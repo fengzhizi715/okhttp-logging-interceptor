@@ -1,6 +1,6 @@
-package cn.netdiscovery.http.inteerceptor
+package cn.netdiscovery.http.interceptor
 
-import cn.netdiscovery.http.inteerceptor.log.LogManager
+import cn.netdiscovery.http.interceptor.log.LogManager
 import okhttp3.FormBody
 import okhttp3.HttpUrl
 import okhttp3.Request
@@ -13,7 +13,7 @@ import java.io.IOException
 /**
  *
  * @FileName:
- *          cn.netdiscovery.http.inteerceptor.Logger
+ *          cn.netdiscovery.http.interceptor.Logger
  * @author: Tony Shen
  * @date: 2020-08-14 17:45
  * @version: V1.0 <描述当前版本功能>
