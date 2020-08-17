@@ -44,7 +44,7 @@ val okhttp:OkHttpClient by lazy {
 
 fun main() {
 
-    LogManager.logProxy(object :LogProxy{
+    LogManager.logProxy(object :LogProxy{  // 必须要实现 LogProxy ，否则无法打印网络请求的 request 、 response
         override fun e(tag: String, msg: String) {
         }
 
@@ -63,7 +63,7 @@ fun main() {
     val url = "http://wwww.baidu.com"
     val request: Request = Request.Builder()
         .url(url)
-        .get() //默认就是GET请求，可以不写
+        .get()
         .build()
 
     val call: Call = okhttp.newCall(request)

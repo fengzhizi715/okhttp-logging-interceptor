@@ -122,7 +122,7 @@ class LoggingInterceptor private constructor(private val builder: LoggingInterce
 
     class Builder {
 
-        var TAG = "SAF_Logging_Interceptor"
+        var TAG = "Logging_Interceptor"
 
         var isDebug: Boolean = false
         var enableThreadName: Boolean = true
