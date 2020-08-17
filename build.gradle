@@ -3,7 +3,10 @@ apply plugin: 'java'
 ext {
     libraries = [
             okhttp3                   : "4.8.0",
-            json                      : "20200518"
+
+            json                      : "20200518",
+
+            logback                   : "1.2.3"
     ]
 }
 
