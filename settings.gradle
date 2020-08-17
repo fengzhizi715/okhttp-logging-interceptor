@@ -1,3 +1,3 @@
-rootProject.name = 'okhttp-loging-interceptor'
+rootProject.name = 'okhttp-logging-interceptor'
 include 'core'
 include 'example'
