@@ -33,7 +33,8 @@ val okhttp:OkHttpClient by lazy {
         .request()
         .requestTag("Request")
         .response()
-        .responseTag("Response") //.hideVerticalLine()// 隐藏竖线边框
+        .responseTag("Response")
+//        .hideVerticalLine()// 隐藏竖线边框
         .build()
 
     //设置拦截器
