@@ -8,7 +8,7 @@
 # 下载安装：
 
 ```groovy
-implementation 'cn.netdiscovery.http.interceptor:okhttp-logging-interceptor:1.0.0'
+implementation 'cn.netdiscovery.http.interceptor:okhttp-logging-interceptor:1.0.1'
 ```
 
 # 使用方法：
