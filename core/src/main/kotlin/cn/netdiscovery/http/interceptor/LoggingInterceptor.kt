@@ -143,10 +143,10 @@ class LoggingInterceptor private constructor(private val builder: LoggingInterce
             get() = builder.build()
 
         internal fun getTag(isRequest: Boolean): String {
-            if (isRequest) {
-                return if (requestTag.isNullOrBlank()) TAG else requestTag!!
+            return if (isRequest) {
+                if (requestTag.isNullOrBlank()) TAG else requestTag!!
             } else {
-                return if (responseTag.isNullOrBlank()) TAG else responseTag!!
+                if (responseTag.isNullOrBlank()) TAG else responseTag!!
             }
         }
 
