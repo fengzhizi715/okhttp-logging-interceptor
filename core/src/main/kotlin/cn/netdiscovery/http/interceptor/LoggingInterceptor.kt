@@ -20,16 +20,32 @@ class LoggingInterceptor private constructor(private val builder: LoggingInterce
 
     private val isDebug: Boolean
     private val charset: Charset
+    private val excludeList:MutableList<String>
 
     init {
         this.isDebug = builder.isDebug
         this.charset = Charset.forName("UTF-8")
+        this.excludeList = builder.excludeList
     }
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
 
         var request = chain.request()
+
+        if (excludeList.size>0) {
+            var flag = false
+            excludeList.forEach {
+                if (request.url.encodedPath.contains(it)) {
+                    flag = true
+                    return@forEach
+                }
+            }
+
+            if (flag) {
+                return chain.proceed(request)
+            }
+        }
 
         if (builder.headers.size > 0) {
             val headers = request.headers
@@ -130,6 +146,7 @@ class LoggingInterceptor private constructor(private val builder: LoggingInterce
         var responseFlag: Boolean = false
         var hideVerticalLineFlag: Boolean = false
         var logLevel: LogLevel = LogLevel.INFO
+        val excludeList = mutableListOf<String>()
 
         private var requestTag: String?=null
         private var responseTag: String?=null
@@ -251,6 +268,11 @@ class LoggingInterceptor private constructor(private val builder: LoggingInterce
          */
         fun printThreadName(enable: Boolean): Builder {
             this.enableThreadName = enable
+            return this
+        }
+
+        fun excludePath(path:String): Builder {
+            this.excludeList.add(path)
             return this
         }
 
