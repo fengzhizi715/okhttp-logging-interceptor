@@ -6,7 +6,7 @@
 
 # 功能特点：
 
-* 支持 Android、桌面、后端的使用
+* 支持 Android、桌面、后端项目的使用
 * 支持 http request、response 的数据格式化的输出。
 * 当请求为 Post 时，支持 Form 表单的打印。
 * 支持格式化时去掉竖线边框显示日志。方便将网络请求复制到 Postman 之类的工具。
@@ -15,6 +15,17 @@
 * 支持排除一些接口的日志显示
 
 # 下载安装：
+
+对于 Java 工程，如果使用 gradle 构建，由于默认没有使用 jcenter()，需要在相应 module 的 build.gradle 中配置
+
+```groovy
+repositories {
+    mavenCentral()
+    jcenter()
+}
+```
+
+使用 okhttp-logging-interceptor 的依赖
 
 ```groovy
 implementation 'cn.netdiscovery.http.interceptor:okhttp-logging-interceptor:1.0.2'
@@ -140,7 +151,7 @@ val okhttp:OkHttpClient by lazy {
 00:28:33.505 [OkHttp http://wwww.baidu.com/...] INFO cn.netdiscovery.http.interceptor.log.test.TestKt - code:200
 ```
 
-# Android 的封装
+# 针对 Android 的封装
 
 https://github.com/fengzhizi715/saf-logginginterceptor
 
