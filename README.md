@@ -46,6 +46,8 @@ val okhttp:OkHttpClient by lazy {
 }
 ```
 
+> 值得注意的是必须要实现 LogProxy 否则无法打印日志
+
 ```kotlin
     LogManager.logProxy(object :LogProxy{  // 必须要实现 LogProxy ，否则无法打印网络请求的 request 、response
         override fun e(tag: String, msg: String) {
@@ -137,3 +139,33 @@ val okhttp:OkHttpClient by lazy {
 ╚══════════════════════════════════════════════════════════════════════════════════════════════════
 00:28:33.505 [OkHttp http://wwww.baidu.com/...] INFO cn.netdiscovery.http.interceptor.log.test.TestKt - code:200
 ```
+
+# Android 的封装
+
+https://github.com/fengzhizi715/saf-logginginterceptor
+
+联系方式
+===
+
+Wechat：fengzhizi715
+
+> Java与Android技术栈：每周更新推送原创技术文章，欢迎扫描下方的公众号二维码并关注，期待与您的共同成长和进步。
+
+![](https://github.com/fengzhizi715/NetDiscovery/blob/master/images/gzh.jpeg)
+
+License
+-------
+
+    Copyright (C) 2020 - present, Tony Shen.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
