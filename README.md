@@ -57,7 +57,8 @@ val okhttp:OkHttpClient by lazy {
 }
 ```
 
-> 值得注意的是必须要实现 LogProxy 否则无法打印日志
+> 值得注意的是开发者必须要实现 LogProxy 否则无法打印 request、response。
+另外，日志代理类可以使用开发者自己的日志库，这样就可以在不同平台使用该库。
 
 ```kotlin
     LogManager.logProxy(object :LogProxy{  // 必须要实现 LogProxy ，否则无法打印网络请求的 request 、response
