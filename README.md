@@ -8,11 +8,11 @@
 
 * 支持 Android、桌面、后端项目的使用
 * 支持 http request、response 的数据格式化的输出。
-* 当请求为 Post 时，支持 Form 表单的打印。
-* 支持格式化时去掉竖线边框显示日志。方便将网络请求复制到 Postman 之类的工具。
+* 当请求为 POST 时，支持 Form 表单的打印。
+* 支持格式化时去掉竖线边框显示日志，方便将网络请求复制到 Postman 之类的工具。
 * 支持日志级别
 * 支持显示当前的线程名称
-* 支持排除一些接口的日志显示
+* 支持排除一些接口的日志显示，方便快速的排查问题。
 
 # 下载安装：
 
@@ -32,6 +32,8 @@ implementation 'cn.netdiscovery.http.interceptor:okhttp-logging-interceptor:1.0.
 ```
 
 # 使用方法：
+
+将 loggingInterceptor 添加到 builder
 
 ```kotlin
 val okhttp:OkHttpClient by lazy {
@@ -153,6 +155,8 @@ val okhttp:OkHttpClient by lazy {
 ```
 
 # 针对 Android 的封装
+
+Android 项目可以直接使用
 
 https://github.com/fengzhizi715/saf-logginginterceptor
 
