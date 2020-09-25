@@ -160,6 +160,10 @@ Android 项目可以直接使用
 
 https://github.com/fengzhizi715/saf-logginginterceptor
 
+# TODO List
+
+* 优化 HttpResponse 返回 url 的显示，特别是对于过长的 url 优化显示。
+
 联系方式
 ===
 
