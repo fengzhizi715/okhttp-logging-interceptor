@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
  * @date: 2020-08-14 18:26
  * @version: V1.0 <描述当前版本功能>
  */
-class LoggingInterceptor private constructor(private val builder: LoggingInterceptor.Builder) : Interceptor {
+class LoggingInterceptor private constructor(private val builder: Builder) : Interceptor {
 
     private val isDebug: Boolean
     private val charset: Charset
@@ -168,19 +168,18 @@ class LoggingInterceptor private constructor(private val builder: LoggingInterce
         }
 
         /**
+         * 添加到 header
          * @param name  Filed
          * @param value Value
          * @return Builder
-         * * Add a field with the specified value
          */
         fun addHeader(name: String, value: String): Builder {
-            builder.set(name, value)
+            builder[name] = value
             return this
         }
 
         /**
-         * Set request and response each log tag
-         *
+         * 设置 request、response 统一的 tag
          * @param tag general log tag
          * @return Builder
          */
@@ -190,8 +189,7 @@ class LoggingInterceptor private constructor(private val builder: LoggingInterce
         }
 
         /**
-         * Set request log tag
-         *
+         * 设置 request 单独的 tag
          * @param tag request log tag
          * @return Builder
          */
@@ -201,7 +199,7 @@ class LoggingInterceptor private constructor(private val builder: LoggingInterce
         }
 
         /**
-         * Set response log tag
+         *  设置 response 单独的 tag
          *
          * @param tag response log tag
          * @return Builder
@@ -212,6 +210,7 @@ class LoggingInterceptor private constructor(private val builder: LoggingInterce
         }
 
         /**
+         * 设置打印 request 的日志
          * Set request log flag
          *
          * @return Builder
@@ -222,6 +221,7 @@ class LoggingInterceptor private constructor(private val builder: LoggingInterce
         }
 
         /**
+         * 设置打印 response 的日志
          * Set response log flag
          *
          * @return Builder
@@ -232,6 +232,7 @@ class LoggingInterceptor private constructor(private val builder: LoggingInterce
         }
 
         /**
+         * 设置隐藏竖线边框，便于拷贝日志
          * Set hide vertical line flag
          *
          * @return Builder
@@ -242,7 +243,7 @@ class LoggingInterceptor private constructor(private val builder: LoggingInterce
         }
 
         /**
-         * Set logLevel
+         * 设置日志级别
          *
          * @return Builder
          */
@@ -252,6 +253,7 @@ class LoggingInterceptor private constructor(private val builder: LoggingInterce
         }
 
         /**
+         * 是否打印 request、response 的日志
          * @param isDebug set can sending log output
          *
          * @return Builder
@@ -262,6 +264,7 @@ class LoggingInterceptor private constructor(private val builder: LoggingInterce
         }
 
         /**
+         * 是否打印线程名，默认会打印
          * @param enable print thread name, default = true
          *
          * @return Builder
@@ -271,6 +274,10 @@ class LoggingInterceptor private constructor(private val builder: LoggingInterce
             return this
         }
 
+        /**
+         * 排除针对某个 path 打印日志，
+         * 可以不断添加 path
+         */
         fun excludePath(path:String): Builder {
             this.excludeList.add(path)
             return this
