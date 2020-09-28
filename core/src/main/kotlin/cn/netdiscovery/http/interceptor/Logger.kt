@@ -201,15 +201,20 @@ class Logger {
 
             if (hideVerticalLine) {
 
-                return " URL: " + request.url + getDoubleSeparator(hideVerticalLine) + " Method: @" + request.method + getDoubleSeparator(hideVerticalLine) +
-                        if (enableThreadName) " Thread: " + Thread.currentThread().name + getDoubleSeparator(hideVerticalLine) else ""
+                if(request.url.toString().length > urlLength) {
+                    return " URL: " + request.url.toString().take(urlLength) + "$LINE_SEPARATOR " + request.url.toString().substring(urlLength,request.url.toString().length) + getDoubleSeparator(hideVerticalLine) + " Method: @" + request.method + getDoubleSeparator(hideVerticalLine) +
+                            if (enableThreadName) " Thread: " + Thread.currentThread().name + getDoubleSeparator(hideVerticalLine) else ""
+                } else {
+                    return " URL: " + request.url + getDoubleSeparator(hideVerticalLine) + " Method: @" + request.method + getDoubleSeparator(hideVerticalLine) +
+                            if (enableThreadName) " Thread: " + Thread.currentThread().name + getDoubleSeparator(hideVerticalLine) else ""
+                }
             } else {
 
-                if (request.url.toString().length > urlLength) {
-                    return "║ URL: " + request.url.toString().take(urlLength)  + "$LINE_SEPARATOR║ " + request.url.toString().substring(urlLength,request.url.toString().length)  + getDoubleSeparator()  + "║ Method: @" + request.method + getDoubleSeparator() +
+                return if (request.url.toString().length > urlLength) {
+                    "║ URL: " + request.url.toString().take(urlLength)  + "$LINE_SEPARATOR║ " + request.url.toString().substring(urlLength,request.url.toString().length)  + getDoubleSeparator()  + "║ Method: @" + request.method + getDoubleSeparator() +
                             if (enableThreadName) "║ Thread: " + Thread.currentThread().name + getDoubleSeparator() else ""
                 } else {
-                    return "║ URL: " + request.url + getDoubleSeparator() + "║ Method: @" + request.method + getDoubleSeparator() +
+                    "║ URL: " + request.url + getDoubleSeparator() + "║ Method: @" + request.method + getDoubleSeparator() +
                             if (enableThreadName) "║ Thread: " + Thread.currentThread().name + getDoubleSeparator() else ""
                 }
             }
