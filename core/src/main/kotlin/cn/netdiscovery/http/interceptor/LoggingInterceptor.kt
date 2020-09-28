@@ -201,8 +201,7 @@ class LoggingInterceptor private constructor(private val builder: Builder) : Int
         }
 
         /**
-         *  设置 response 单独的 tag
-         *
+         * 设置 response 单独的 tag
          * @param tag response log tag
          * @return Builder
          */
@@ -212,7 +211,7 @@ class LoggingInterceptor private constructor(private val builder: Builder) : Int
         }
 
         /**
-         * 设置打印 request 的日志
+         * 设置需要打印 request 的日志
          * Set request log flag
          *
          * @return Builder
@@ -223,7 +222,7 @@ class LoggingInterceptor private constructor(private val builder: Builder) : Int
         }
 
         /**
-         * 设置打印 response 的日志
+         * 设置需要打印 response 的日志
          * Set response log flag
          *
          * @return Builder
@@ -287,6 +286,11 @@ class LoggingInterceptor private constructor(private val builder: Builder) : Int
             return this
         }
 
+        /**
+         * 设置使用的平台是在 Android 平台
+         *
+         * @return Builder
+         */
         fun androidPlatform():Builder {
             this.androidFlag = true
             return this
