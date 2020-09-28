@@ -20,7 +20,7 @@ class LoggingInterceptor private constructor(private val builder: Builder) : Int
 
     private val isDebug: Boolean
     private val charset: Charset
-    private val excludeList:MutableList<String>
+    private val excludeList:MutableList<String>  // 排除的 path 列表
 
     init {
         this.isDebug = builder.isDebug
@@ -144,8 +144,10 @@ class LoggingInterceptor private constructor(private val builder: Builder) : Int
         var enableThreadName: Boolean = true
         var requestFlag: Boolean = false
         var responseFlag: Boolean = false
+        var androidFlag: Boolean = false
         var hideVerticalLineFlag: Boolean = false
         var logLevel: LogLevel = LogLevel.INFO
+        var urlLength:Int = 128
         val excludeList = mutableListOf<String>()
 
         private var requestTag: String?=null
@@ -275,7 +277,23 @@ class LoggingInterceptor private constructor(private val builder: Builder) : Int
         }
 
         /**
-         * 排除针对某个 path 打印日志，
+         * 设置需要打印 url 的长度，超过该长度会换行显示
+         * @param urlLength
+         *
+         * @return Builder
+         */
+        fun urlLength(urlLength:Int):Builder {
+            this.urlLength = urlLength
+            return this
+        }
+
+        fun androidPlatform():Builder {
+            this.androidFlag = true
+            return this
+        }
+
+        /**
+         * 排除针对某个 path 进行打印日志，
          * 可以不断添加 path
          */
         fun excludePath(path:String): Builder {

@@ -42,22 +42,27 @@ class Logger {
         /**
          * 支持超长日志的打印
          */
-        private fun printLog(tag: String, logString: String, logLevel: LoggingInterceptor.LogLevel) {
+        private fun printLog(tag: String, logString: String, logLevel: LoggingInterceptor.LogLevel, androidFlag:Boolean) {
 
-            if (logString.length > MAX_STRING_LENGTH) {
+            if (androidFlag) { // Android 平台需要判断日志是否 > 4000 行
+                if (logString.length > MAX_STRING_LENGTH) {
 
-                var i = 0
+                    var i = 0
 
-                while (i < logString.length) {
+                    while (i < logString.length) {
 
-                    if (i + MAX_STRING_LENGTH < logString.length)
-                        log(tag, logString.substring(i, i + MAX_STRING_LENGTH), logLevel)
-                    else
-                        log(tag, logString.substring(i, logString.length), logLevel)
-                    i += MAX_STRING_LENGTH
+                        if (i + MAX_STRING_LENGTH < logString.length)
+                            log(tag, logString.substring(i, i + MAX_STRING_LENGTH), logLevel)
+                        else
+                            log(tag, logString.substring(i, logString.length), logLevel)
+                        i += MAX_STRING_LENGTH
+                    }
+                } else {
+                    log(tag, logString, logLevel)
                 }
-            } else
-                log(tag, logString, logLevel);
+            } else { // 非 Android 平台无需进行判断
+                log(tag, logString, logLevel)
+            }
         }
 
         private fun log(tag: String, msg: String, logLevel: LoggingInterceptor.LogLevel = LoggingInterceptor.LogLevel.INFO) {
@@ -75,6 +80,7 @@ class Logger {
             val tag = builder.getTag(true)
             val hideVerticalLine = builder.hideVerticalLineFlag
             val logLevel = builder.logLevel
+            val urlLength = builder.urlLength
             val requestBody = request.body
 
             val requestString = StringBuilder().apply {
@@ -83,7 +89,7 @@ class Logger {
                     .append(LINE_SEPARATOR)
                     .append(TOP_BORDER)
                     .append(LINE_SEPARATOR)
-                    .append(getRequest(request, hideVerticalLine, builder.enableThreadName))
+                    .append(getRequest(request, hideVerticalLine, builder.enableThreadName,urlLength))
 
                 val header = request.headers.toString()
 
@@ -120,6 +126,7 @@ class Logger {
             val tag = builder.getTag(true)
             val hideVerticalLine = builder.hideVerticalLineFlag
             val logLevel = builder.logLevel
+            val urlLength = builder.urlLength
 
             val requestString = StringBuilder().apply {
 
@@ -127,7 +134,7 @@ class Logger {
                     .append(LINE_SEPARATOR)
                     .append(TOP_BORDER)
                     .append(LINE_SEPARATOR)
-                    .append(getRequest(request))
+                    .append(getRequest(request, hideVerticalLine, builder.enableThreadName,urlLength))
 
                 val requestBodyString = if (hideVerticalLine) {
                     " $LINE_SEPARATOR Body:$LINE_SEPARATOR"
@@ -170,7 +177,7 @@ class Logger {
                 append(BOTTOM_BORDER)
             }.toString()
 
-            printLog(tag, responseString, logLevel)
+            printLog(tag, responseString, logLevel,builder.androidFlag)
         }
 
         @JvmStatic
@@ -190,7 +197,7 @@ class Logger {
             log(tag, responseString, logLevel)
         }
 
-        private fun getRequest(request: Request, hideVerticalLine: Boolean = false, enableThreadName: Boolean = true): String {
+        private fun getRequest(request: Request, hideVerticalLine: Boolean = false, enableThreadName: Boolean = true, urlLength:Int): String {
 
             if (hideVerticalLine) {
 
@@ -198,8 +205,13 @@ class Logger {
                         if (enableThreadName) " Thread: " + Thread.currentThread().name + getDoubleSeparator(hideVerticalLine) else ""
             } else {
 
-                return "║ URL: " + request.url + getDoubleSeparator() + "║ Method: @" + request.method + getDoubleSeparator() +
-                        if (enableThreadName) "║ Thread: " + Thread.currentThread().name + getDoubleSeparator() else ""
+                if (request.url.toString().length > urlLength) {
+                    return "║ URL: " + request.url.toString().take(urlLength)  + "$LINE_SEPARATOR║ " + request.url.toString().substring(urlLength,request.url.toString().length)  + getDoubleSeparator()  + "║ Method: @" + request.method + getDoubleSeparator() +
+                            if (enableThreadName) "║ Thread: " + Thread.currentThread().name + getDoubleSeparator() else ""
+                } else {
+                    return "║ URL: " + request.url + getDoubleSeparator() + "║ Method: @" + request.method + getDoubleSeparator() +
+                            if (enableThreadName) "║ Thread: " + Thread.currentThread().name + getDoubleSeparator() else ""
+                }
             }
         }
 
