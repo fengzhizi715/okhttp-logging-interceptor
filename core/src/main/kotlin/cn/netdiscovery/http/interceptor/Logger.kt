@@ -24,7 +24,7 @@ class Logger {
 
         private const val JSON_INDENT = 3
         private const val MAX_STRING_LENGTH = 4000
-        private const val MAX_LONG_SIZE = 120
+//        private const val MAX_LONG_SIZE = 120
         private const val N = "\n"
         private const val T = "\t"
 
@@ -81,6 +81,7 @@ class Logger {
             val hideVerticalLine = builder.hideVerticalLineFlag
             val logLevel = builder.logLevel
             val urlLength = builder.urlLength
+            val lineLength = builder.lineLength
             val requestBody = request.body
 
             val requestString = StringBuilder().apply {
@@ -111,7 +112,7 @@ class Logger {
 
                     val bodyString = bodyToString(request).split(LINE_SEPARATOR.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
-                    append(requestBodyString + logLines(bodyString, hideVerticalLine))
+                    append(requestBodyString + logLines(bodyString, hideVerticalLine,lineLength))
                 }
 
                 append(BOTTOM_BORDER)
@@ -127,6 +128,7 @@ class Logger {
             val hideVerticalLine = builder.hideVerticalLineFlag
             val logLevel = builder.logLevel
             val urlLength = builder.urlLength
+            val lineLength = builder.lineLength
 
             val requestString = StringBuilder().apply {
 
@@ -144,7 +146,7 @@ class Logger {
 
                 val binaryBodyString = binaryBodyToString(request).split(LINE_SEPARATOR.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
-                append(requestBodyString + logLines(binaryBodyString))
+                append(requestBodyString + logLines(binaryBodyString,hideVerticalLine,lineLength))
                 append(BOTTOM_BORDER)
 
             }.toString()
@@ -160,6 +162,7 @@ class Logger {
             val hideVerticalLine = builder.hideVerticalLineFlag
             val logLevel = builder.logLevel
             val urlLength = builder.urlLength
+            val lineLength = builder.lineLength
 
             val responseString = StringBuilder().apply {
                 append("  ").append(LINE_SEPARATOR).append(TOP_BORDER).append(LINE_SEPARATOR)
@@ -173,7 +176,7 @@ class Logger {
 
                 val bodyString = getJsonString(bodyString).split(LINE_SEPARATOR.toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
-                append(responseBody + logLines(bodyString, hideVerticalLine))
+                append(responseBody + logLines(bodyString, hideVerticalLine,lineLength))
 
                 append(BOTTOM_BORDER)
             }.toString()
@@ -228,13 +231,13 @@ class Logger {
 
             if (hideVerticalLine) {
 
-                if (requestUrl.toString().length > urlLength) {
-                    return " URL: " + requestUrl.toString().take(urlLength) + "$LINE_SEPARATOR " + requestUrl.toString().substring(urlLength,requestUrl.toString().length) + getDoubleSeparator(hideVerticalLine) + " is success : " + isSuccessful + " - " + "Received in: " + tookMs + "ms" + getDoubleSeparator(hideVerticalLine) + " Status Code: " +
+                return if (requestUrl.toString().length > urlLength) {
+                    " URL: " + requestUrl.toString().take(urlLength) + "$LINE_SEPARATOR " + requestUrl.toString().substring(urlLength,requestUrl.toString().length) + getDoubleSeparator(hideVerticalLine) + " is success : " + isSuccessful + " - " + "Received in: " + tookMs + "ms" + getDoubleSeparator(hideVerticalLine) + " Status Code: " +
                             code + getDoubleSeparator(hideVerticalLine) +
                             (if (enableThreadName) " Thread: " + Thread.currentThread().name + getDoubleSeparator(hideVerticalLine) else "") +
                             if (header.isLineEmpty()) " " else " Headers:" + LINE_SEPARATOR + dotHeaders(header, hideVerticalLine)
                 } else {
-                    return " URL: " + requestUrl + getDoubleSeparator(hideVerticalLine) + " is success : " + isSuccessful + " - " + "Received in: " + tookMs + "ms" + getDoubleSeparator(hideVerticalLine) + " Status Code: " +
+                    " URL: " + requestUrl + getDoubleSeparator(hideVerticalLine) + " is success : " + isSuccessful + " - " + "Received in: " + tookMs + "ms" + getDoubleSeparator(hideVerticalLine) + " Status Code: " +
                             code + getDoubleSeparator(hideVerticalLine) +
                             (if (enableThreadName) " Thread: " + Thread.currentThread().name + getDoubleSeparator(hideVerticalLine) else "") +
                             if (header.isLineEmpty()) " " else " Headers:" + LINE_SEPARATOR + dotHeaders(header, hideVerticalLine)
@@ -273,13 +276,13 @@ class Logger {
             }.toString()
         }
 
-        private fun logLines(lines: Array<String>, hideVerticalLine: Boolean = false) = StringBuilder().apply {
+        private fun logLines(lines: Array<String>, hideVerticalLine: Boolean = false,lineLength:Int) = StringBuilder().apply {
 
             for (line in lines) {
-                val lineLength = line.length
-                for (i in 0..lineLength / MAX_LONG_SIZE) {
-                    val start = i * MAX_LONG_SIZE
-                    var end = (i + 1) * MAX_LONG_SIZE
+                val length = line.length
+                for (i in 0..length / lineLength) {
+                    val start = i * lineLength
+                    var end = (i + 1) * lineLength
                     end = if (end > line.length) line.length else end
 
                     if (hideVerticalLine) {

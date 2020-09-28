@@ -148,6 +148,7 @@ class LoggingInterceptor private constructor(private val builder: Builder) : Int
         var hideVerticalLineFlag: Boolean = false
         var logLevel: LogLevel = LogLevel.INFO
         var urlLength:Int = 128
+        var lineLength:Int = 128
         val excludeList = mutableListOf<String>()
 
         private var requestTag: String?=null
@@ -286,8 +287,13 @@ class LoggingInterceptor private constructor(private val builder: Builder) : Int
             return this
         }
 
+        fun lineLength(lineLength:Int):Builder {
+            this.lineLength = lineLength
+            return this
+        }
+
         /**
-         * 设置使用的平台是在 Android 平台
+         * 设置使用的平台是 Android 平台
          *
          * @return Builder
          */
