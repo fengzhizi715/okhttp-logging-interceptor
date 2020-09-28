@@ -159,10 +159,11 @@ class Logger {
             val tag = builder.getTag(false)
             val hideVerticalLine = builder.hideVerticalLineFlag
             val logLevel = builder.logLevel
+            val urlLength = builder.urlLength
 
             val responseString = StringBuilder().apply {
                 append("  ").append(LINE_SEPARATOR).append(TOP_BORDER).append(LINE_SEPARATOR)
-                append(getResponse(headers, chainMs, code, isSuccessful, requestUrl, hideVerticalLine, builder.enableThreadName))
+                append(getResponse(headers, chainMs, code, isSuccessful, requestUrl, hideVerticalLine, builder.enableThreadName, urlLength))
 
                 val responseBody = if (hideVerticalLine) {
                     " $LINE_SEPARATOR Body:$LINE_SEPARATOR"
@@ -185,12 +186,14 @@ class Logger {
                               code: Int, headers: String, requestUrl: HttpUrl) {
 
             val tag = builder.getTag(false)
+            val hideVerticalLine = builder.hideVerticalLineFlag
             val logLevel = builder.logLevel
+            val urlLength = builder.urlLength
 
             val responseString = StringBuilder().apply {
 
                 append("  ").append(LINE_SEPARATOR).append(TOP_BORDER).append(LINE_SEPARATOR)
-                append(getResponse(headers, chainMs, code, isSuccessful, requestUrl))
+                append(getResponse(headers, chainMs, code, isSuccessful, requestUrl,hideVerticalLine, builder.enableThreadName, urlLength))
                 append(BOTTOM_BORDER)
             }.toString()
 
@@ -201,11 +204,11 @@ class Logger {
 
             if (hideVerticalLine) {
 
-                if(request.url.toString().length > urlLength) {
-                    return " URL: " + request.url.toString().take(urlLength) + "$LINE_SEPARATOR " + request.url.toString().substring(urlLength,request.url.toString().length) + getDoubleSeparator(hideVerticalLine) + " Method: @" + request.method + getDoubleSeparator(hideVerticalLine) +
+                return if(request.url.toString().length > urlLength) {
+                    " URL: " + request.url.toString().take(urlLength) + "$LINE_SEPARATOR " + request.url.toString().substring(urlLength,request.url.toString().length) + getDoubleSeparator(hideVerticalLine) + " Method: @" + request.method + getDoubleSeparator(hideVerticalLine) +
                             if (enableThreadName) " Thread: " + Thread.currentThread().name + getDoubleSeparator(hideVerticalLine) else ""
                 } else {
-                    return " URL: " + request.url + getDoubleSeparator(hideVerticalLine) + " Method: @" + request.method + getDoubleSeparator(hideVerticalLine) +
+                    " URL: " + request.url + getDoubleSeparator(hideVerticalLine) + " Method: @" + request.method + getDoubleSeparator(hideVerticalLine) +
                             if (enableThreadName) " Thread: " + Thread.currentThread().name + getDoubleSeparator(hideVerticalLine) else ""
                 }
             } else {
@@ -221,7 +224,7 @@ class Logger {
         }
 
         private fun getResponse(header: String, tookMs: Long, code: Int, isSuccessful: Boolean,
-                                requestUrl: HttpUrl, hideVerticalLine: Boolean = false, enableThreadName: Boolean = true): String {
+                                requestUrl: HttpUrl, hideVerticalLine: Boolean = false, enableThreadName: Boolean = true, urlLength:Int): String {
 
             if (hideVerticalLine) {
 
@@ -231,10 +234,17 @@ class Logger {
                         if (header.isLineEmpty()) " " else " Headers:" + LINE_SEPARATOR + dotHeaders(header, hideVerticalLine)
             } else {
 
-                return "║ URL: " + requestUrl + getDoubleSeparator() + "║ is success : " + isSuccessful + " - " + "Received in: " + tookMs + "ms" + getDoubleSeparator() + "║ Status Code: " +
-                        code + getDoubleSeparator() +
-                        (if (enableThreadName) "║ Thread: " + Thread.currentThread().name + getDoubleSeparator() else "") +
-                        if (header.isLineEmpty()) "║ " else "║ Headers:" + LINE_SEPARATOR + dotHeaders(header)
+                if (requestUrl.toString().length > urlLength) {
+                    return "║ URL: " + requestUrl.toString().take(urlLength)  + "$LINE_SEPARATOR║ " + requestUrl.toString().substring(urlLength, requestUrl.toString().length)  + getDoubleSeparator() + "║ is success : " + isSuccessful + " - " + "Received in: " + tookMs + "ms" + getDoubleSeparator() + "║ Status Code: " +
+                            code + getDoubleSeparator() +
+                            (if (enableThreadName) "║ Thread: " + Thread.currentThread().name + getDoubleSeparator() else "") +
+                            if (header.isLineEmpty()) "║ " else "║ Headers:" + LINE_SEPARATOR + dotHeaders(header)
+                } else {
+                    return "║ URL: " + requestUrl + getDoubleSeparator() + "║ is success : " + isSuccessful + " - " + "Received in: " + tookMs + "ms" + getDoubleSeparator() + "║ Status Code: " +
+                            code + getDoubleSeparator() +
+                            (if (enableThreadName) "║ Thread: " + Thread.currentThread().name + getDoubleSeparator() else "") +
+                            if (header.isLineEmpty()) "║ " else "║ Headers:" + LINE_SEPARATOR + dotHeaders(header)
+                }
             }
         }
 
