@@ -228,19 +228,26 @@ class Logger {
 
             if (hideVerticalLine) {
 
-                return " URL: " + requestUrl + getDoubleSeparator(hideVerticalLine) + " is success : " + isSuccessful + " - " + "Received in: " + tookMs + "ms" + getDoubleSeparator(hideVerticalLine) + " Status Code: " +
-                        code + getDoubleSeparator(hideVerticalLine) +
-                        (if (enableThreadName) " Thread: " + Thread.currentThread().name + getDoubleSeparator(hideVerticalLine) else "") +
-                        if (header.isLineEmpty()) " " else " Headers:" + LINE_SEPARATOR + dotHeaders(header, hideVerticalLine)
+                if (requestUrl.toString().length > urlLength) {
+                    return " URL: " + requestUrl.toString().take(urlLength) + "$LINE_SEPARATOR " + requestUrl.toString().substring(urlLength,requestUrl.toString().length) + getDoubleSeparator(hideVerticalLine) + " is success : " + isSuccessful + " - " + "Received in: " + tookMs + "ms" + getDoubleSeparator(hideVerticalLine) + " Status Code: " +
+                            code + getDoubleSeparator(hideVerticalLine) +
+                            (if (enableThreadName) " Thread: " + Thread.currentThread().name + getDoubleSeparator(hideVerticalLine) else "") +
+                            if (header.isLineEmpty()) " " else " Headers:" + LINE_SEPARATOR + dotHeaders(header, hideVerticalLine)
+                } else {
+                    return " URL: " + requestUrl + getDoubleSeparator(hideVerticalLine) + " is success : " + isSuccessful + " - " + "Received in: " + tookMs + "ms" + getDoubleSeparator(hideVerticalLine) + " Status Code: " +
+                            code + getDoubleSeparator(hideVerticalLine) +
+                            (if (enableThreadName) " Thread: " + Thread.currentThread().name + getDoubleSeparator(hideVerticalLine) else "") +
+                            if (header.isLineEmpty()) " " else " Headers:" + LINE_SEPARATOR + dotHeaders(header, hideVerticalLine)
+                }
             } else {
 
-                if (requestUrl.toString().length > urlLength) {
-                    return "║ URL: " + requestUrl.toString().take(urlLength)  + "$LINE_SEPARATOR║ " + requestUrl.toString().substring(urlLength, requestUrl.toString().length)  + getDoubleSeparator() + "║ is success : " + isSuccessful + " - " + "Received in: " + tookMs + "ms" + getDoubleSeparator() + "║ Status Code: " +
+                return if (requestUrl.toString().length > urlLength) {
+                    "║ URL: " + requestUrl.toString().take(urlLength)  + "$LINE_SEPARATOR║ " + requestUrl.toString().substring(urlLength, requestUrl.toString().length)  + getDoubleSeparator() + "║ is success : " + isSuccessful + " - " + "Received in: " + tookMs + "ms" + getDoubleSeparator() + "║ Status Code: " +
                             code + getDoubleSeparator() +
                             (if (enableThreadName) "║ Thread: " + Thread.currentThread().name + getDoubleSeparator() else "") +
                             if (header.isLineEmpty()) "║ " else "║ Headers:" + LINE_SEPARATOR + dotHeaders(header)
                 } else {
-                    return "║ URL: " + requestUrl + getDoubleSeparator() + "║ is success : " + isSuccessful + " - " + "Received in: " + tookMs + "ms" + getDoubleSeparator() + "║ Status Code: " +
+                    "║ URL: " + requestUrl + getDoubleSeparator() + "║ is success : " + isSuccessful + " - " + "Received in: " + tookMs + "ms" + getDoubleSeparator() + "║ Status Code: " +
                             code + getDoubleSeparator() +
                             (if (enableThreadName) "║ Thread: " + Thread.currentThread().name + getDoubleSeparator() else "") +
                             if (header.isLineEmpty()) "║ " else "║ Headers:" + LINE_SEPARATOR + dotHeaders(header)
