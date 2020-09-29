@@ -29,7 +29,7 @@ repositories {
 使用 okhttp-logging-interceptor 的依赖
 
 ```groovy
-implementation 'cn.netdiscovery.http.interceptor:okhttp-logging-interceptor:1.0.2'
+implementation 'cn.netdiscovery.http.interceptor:okhttp-logging-interceptor:1.1.0'
 ```
 
 # 使用方法：
