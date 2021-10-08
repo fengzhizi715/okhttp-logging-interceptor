@@ -18,19 +18,21 @@
 
 # 下载安装：
 
-对于 Java 工程，如果使用 gradle 构建，由于默认没有使用 jcenter()，需要在相应 module 的 build.gradle 中配置
+将它添加到项目的 root build.gradle 中：
 
 ```groovy
-repositories {
-    mavenCentral()
-    jcenter()
-}
+	allprojects {
+        repositories {
+            ...
+            maven { url 'https://jitpack.io' }
+        }
+    }
 ```
 
 使用 okhttp-logging-interceptor 的依赖
 
 ```groovy
-implementation 'cn.netdiscovery.http.interceptor:okhttp-logging-interceptor:1.1.0'
+implementation 'com.github.fengzhizi715.okhttp-logging-interceptor:core:1.1.0'
 ```
 
 # 使用方法：
