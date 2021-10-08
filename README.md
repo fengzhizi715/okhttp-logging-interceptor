@@ -32,7 +32,7 @@
 使用 okhttp-logging-interceptor 的依赖
 
 ```groovy
-implementation 'com.github.fengzhizi715.okhttp-logging-interceptor:core:v1.1.0'
+implementation 'com.github.fengzhizi715.okhttp-logging-interceptor:core:v1.1.1'
 ```
 
 # 使用方法：
