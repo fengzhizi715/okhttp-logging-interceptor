@@ -21,7 +21,7 @@
 将它添加到项目的 root build.gradle 中：
 
 ```groovy
-	allprojects {
+    allprojects {
         repositories {
             ...
             maven { url 'https://jitpack.io' }
