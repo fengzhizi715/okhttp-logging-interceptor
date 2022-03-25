@@ -100,11 +100,7 @@ class LoggingInterceptor private constructor(private val builder: Builder) : Int
             val responseBody = response.body
             val contentType = responseBody?.contentType()
 
-            var subtype: String? = null
-
-            if (contentType != null) {
-                subtype = contentType.subtype
-            }
+            var subtype = contentType?.subtype ?: response.headers["Content-Type"] ?: ""
 
             if (subtypeIsNotFile(subtype)) {
 
