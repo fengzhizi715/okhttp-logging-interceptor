@@ -21,11 +21,13 @@ class LoggingInterceptor private constructor(private val builder: Builder) : Int
     private val isDebug: Boolean
     private val charset: Charset
     private val excludeList:MutableList<String>  // 排除的 path 列表
+    private val forcePrintBodyList:MutableList<String>  // 排除的 path 列表
 
     init {
         this.isDebug = builder.isDebug
         this.charset = Charset.forName("UTF-8")
         this.excludeList = builder.excludeList
+        this.forcePrintBodyList = builder.forcePrintBodyList
     }
 
     @Throws(IOException::class)
@@ -100,9 +102,9 @@ class LoggingInterceptor private constructor(private val builder: Builder) : Int
             val responseBody = response.body
             val contentType = responseBody?.contentType()
 
-            var subtype = contentType?.subtype ?: response.headers["Content-Type"] ?: ""
+            val subtype = contentType?.subtype ?: response.headers["Content-Type"] ?: ""
 
-            if (subtypeIsNotFile(subtype)) {
+            if (subtypeIsNotFile(subtype) || forcePrintBodyList.any { requestUrl.encodedPath.contains(it) }) {
 
                 responseBody?.let {
                     val source = it.source()
@@ -146,6 +148,7 @@ class LoggingInterceptor private constructor(private val builder: Builder) : Int
         var urlLength:Int = 128
         var lineLength:Int = 128
         val excludeList = mutableListOf<String>()
+        val forcePrintBodyList = mutableListOf<String>()
 
         private var requestTag: String?=null
         private var responseTag: String?=null
@@ -304,6 +307,17 @@ class LoggingInterceptor private constructor(private val builder: Builder) : Int
          */
         fun excludePath(path:String): Builder {
             this.excludeList.add(path)
+            return this
+        }
+
+        /**
+         * 添加强制打印body的路径
+         * 默认只会打印文本类型的body
+         * 例如后端不规范时，Content-type是流类型 body是文本类型，导致结果无法输出问题
+         * 可以不断添加
+         */
+        fun addForcePrintBodyPath(vararg path:String): Builder {
+            this.forcePrintBodyList.addAll(path)
             return this
         }
 
